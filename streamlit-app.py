@@ -5,16 +5,16 @@ from matplotlib import image, pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sn
 from mordred import descriptors
-from rdkit.Chem.Draw import MolsToGridImage
+# from rdkit.Chem.Draw import MolsToGridImage
 # Sklearn
 from sklearn.metrics import mean_squared_error
 import pickle
 # RDKIt
 from rdkit.Chem import AllChem, Draw
 from rdkit import Chem
-from rdkit.Chem import Descriptors
-from rdkit.Chem import rdMolDescriptors
-from rdkit.ML.Descriptors import MoleculeDescriptors
+# from rdkit.Chem import Descriptors
+# from rdkit.Chem import rdMolDescriptors
+# from rdkit.ML.Descriptors import MoleculeDescriptors
 # streamlit ---
 import streamlit as st
 #from streamlit_gallery import apps, components
