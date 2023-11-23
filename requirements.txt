@@ -11,3 +11,7 @@ seaborn~=0.13.0
 streamlit~=1.28.1
 Pillow~=10.1.0
 requests~=2.31.0
+streamlit-option-menu
+docxtpl~=0.16.7
+lightgbm~=4.1.0
+joblib~=1.3.2
