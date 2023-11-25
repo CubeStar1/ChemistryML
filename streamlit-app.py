@@ -68,6 +68,9 @@ if smiles_list != "['CCCCO']":
 
     col1, col2, col3 = st.columns(3)
 
+    df = pd.DataFrame(eval (smiles_list), columns =['SMILES'])
+
+    #========= function call to calculate 200 molecular descriptors using SMILES
     with col1:
         st.image('img1.png')
         # st.image(MolsToGridImage(molslit, molsPerRow=5, returnPNG=True))
@@ -75,11 +78,6 @@ if smiles_list != "['CCCCO']":
 
     with col2:
         st.write(' ')
-            #for i in range(len(one_or_few_SMILES)):
-                #st.image(f'img{i}.png')
-            #st.image('img1.png')
-            #st.image(MolsToGridImage(molslit, molsPerRow=5, returnPNG=True))
-            #st.subheader('Your input SMILES is: ' + str(smiles_list))
 
     with col3:
         st.write(' ')

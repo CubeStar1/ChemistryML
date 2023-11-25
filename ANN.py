@@ -15,7 +15,7 @@ from keras.layers import Dense, Dropout
 from keras.callbacks import ReduceLROnPlateau
 
 # Reading the dataset
-df = pd.read_csv('qm9.csv')
+df = pd.read_csv('utilities/dataset/qm9.csv')
 
 
 # Using a descriptor that considers the 3D structure of the molecules
