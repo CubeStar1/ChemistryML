@@ -187,7 +187,6 @@ def Prediction():
         with col2:
             st.info('Predicted Value', icon='📈')
             st.metric(label='Cv(kJ/mol.K)', value= X_Cv_value_rounded)
-            time.sleep(1)
             progress_bar.progress(100, "Completed!")
             progress_bar.empty()
         with col3:
