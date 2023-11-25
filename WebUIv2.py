@@ -5,9 +5,9 @@ import base64
 # Streamlit - To build the web application
 import streamlit as st
 from streamlit_option_menu import option_menu
-from st_aggrid import AgGrid, JsCode
-from st_aggrid.grid_options_builder import GridOptionsBuilder
-from st_aggrid.shared import ColumnsAutoSizeMode
+# from st_aggrid import AgGrid, JsCode
+# from st_aggrid.grid_options_builder import GridOptionsBuilder
+# from st_aggrid.shared import ColumnsAutoSizeMode
 # ---------------------------------------------
 
 # Data manipulation
@@ -53,14 +53,14 @@ def __monkey_patch_minmax_setstate__(self, state: Dict[str, Any]) -> None:
 MinMaxScaler.__setstate__ = __monkey_patch_minmax_setstate__
 
 
-scaler = joblib.load('utilities/scaler/ann_scaler_cv.joblib')
+scaler = joblib.load('ann_scaler_cv.joblib')
 
 # desc_df = pd.read_csv('descriptors_cv.csv')
 # desc_df = desc_df.select_dtypes(include=np.number).astype('float32')
 # desc_df = desc_df.loc[:, desc_df.var() > 0.0]
 # desc_df_columns = desc_df.columns[1:1070]
 
-desc_df = pd.read_csv('utilities/descriptors/desc_names.csv')
+desc_df = pd.read_csv('desc_names.csv')
 desc_df_columns = desc_df['Descriptors'].tolist()
 
 # Defining functions
@@ -131,7 +131,7 @@ st.title('Molecular Properties Prediction App')
 
 
 # SIDEBAR
-st.sidebar.image('utilities/images/logo_team10alt-modified.png', use_column_width=True)
+st.sidebar.image('logo_team10alt-modified.png', use_column_width=True)
 st.sidebar.title('Are you ready to predict the properties of your molecules?')
 st.sidebar.markdown("""---""")
 st.sidebar.markdown("## Select property")
@@ -166,7 +166,7 @@ if input_selection == 'Upload SMILES as file input':
 # st.sidebar.markdown("""---""")
 
 
-model_cv = keras.models.load_model('utilities/models/ann_cv_model.h5')
+model_cv = keras.models.load_model('ann_cv_model.h5')
 
 # PREDICTION PAGE
 def Prediction():
