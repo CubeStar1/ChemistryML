@@ -18,7 +18,7 @@ import numpy as np # To manipulate the data
 
 # Molecular Descriptors
 from rdkit import Chem  # To extract information of the molecules
-from rdkit.Chem import Draw  # To draw the molecules
+from rdkit.Chem import Draw # To draw the molecules
 from mordred import Calculator, descriptors  # To calculate descriptors
 # -----------------------------------------------------------------------
 
@@ -68,18 +68,27 @@ desc_df_columns = desc_df['Descriptors'].tolist()
 
 # Function to display molecules
 
-def read_picture_file(file):
-    with open(file, "rb") as f:
-        return base64.b64encode(f.read()).decode()
+# def read_picture_file(file):
+#     with open(file, "rb") as f:
+#         return base64.b64encode(f.read()).decode()
+def display_molecule_in_dataframe_as_html(dataframe):
+    df = dataframe
+    images = []
+    for i in df['SMILES']:
+        Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'static/{i}.png',   size=(300, 300), fitImage=True, imageType='png')
+        images.append(f'<img src="./app/static/{i}.png" width="300" height="300">')
+    df['Image'] = images
 def display_molecule(molecule): # Function to display molecules
     img = Draw.MolToImage(molecule, size=(1000, 1000), fitImage=True)
     st.image(img)
 def display_molecule_dataframe(dataframe):
     df = dataframe
+    img = Draw.MolsToGridImage([Chem.MolFromSmiles(str(i)) for i in df['SMILES']], molsPerRow=2, subImgSize=(300, 300), legends=[str(str(round(i, 2)) + " J/mol.K") for i in df['Predicted Cv (J/mol.K)']])
+    st.image(img, use_column_width=True)
     images = []
     for i in df['SMILES']:
-        Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'static/{i}.png',   size=(300, 300), fitImage=True, imageType='png')
-        images.append(f'./app/static/{i}.png')
+        img = Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'static/{i}.png',   size=(300, 300), fitImage=True, imageType='png')
+        images.append(img)
     df['Image'] = images
 
 # Function to canonize molecules
@@ -128,6 +137,7 @@ properties = ['Dipole moment', 'Heat capacity at 298.15 K']
 # TITLE
 st.set_page_config(page_title="Molecular Properties Prediction App", layout='wide', page_icon=":bar_chart:")
 st.title('Molecular Properties Prediction App')
+st.markdown("""---""")
 
 
 # SIDEBAR
@@ -193,27 +203,21 @@ def Prediction():
             st.info('Time Elapsed', icon='⏱️')
             st.metric(label='Time (s)', value= round(time.time() - start_time, 2))
     elif input_selection == 'Upload SMILES as file input' and prediction:
-        #col1, col2, col3= st.columns(3, gap='large')
-
         df = pd.read_csv(many_SMILES)
         X_test_scaled = mordred_descriptors_dataframe(df)
         X_Cv = predict_property_cv(X_test_scaled, model_cv)
         output_df  = pd.concat([df, X_Cv], axis=1)
-        display_molecule_dataframe(output_df)
         output_df.drop(columns=['mol'], inplace=True)
-        st.dataframe(output_df)
+        display_molecule_in_dataframe_as_html(output_df)
+        st.markdown(output_df.to_html(render_links=True, escape=False), unsafe_allow_html=True)
+        col1, col2  = st.columns(2)
+        with col1:
+            st.info('Intput Molecules', icon='👇')
+            display_molecule_dataframe(output_df)
+        with col2:
+            st.info('Predicted Values', icon='📈')
+            st.dataframe(output_df, use_container_width=True)
 
-        #output_df['image_base64'] = output_df['Image'].apply(lambda x: 'data:image/png;base64,' + read_picture_file(x))
-        #st.dataframe(output_df)
-        # def render_image(params):
-        # gb = GridOptionsBuilder.from_dataframe(output_df)
-        # gb.configure_column("Image", cellRenderer=render_image, maxWidth=100)
-        # gb.configure_selection('single', use_checkbox=False)
-        # grid_options = gb.build()
-        #
-        # grid = AgGrid(output_df, gridOptions=grid_options, height=500, width='100%', fit_columns_on_grid_load=True, allow_unsafe_jscode=True)
-
-        #col1, col2  = st.columns(2)
 
         # with col1:
         #     for i, j in zip(df['SMILES'], X_Cv['Predicted Cv (J/mol.K)']):
