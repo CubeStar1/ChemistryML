@@ -76,7 +76,7 @@ def display_molecule_in_dataframe_as_html(dataframe):
     images = []
     for i in df['SMILES']:
         Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'static/{i}.png',   size=(300, 300), fitImage=True, imageType='png')
-        images.append(f'<img src="./app/static/{i}.png" width="300" height="300">')
+        images.append(f'<img src="https://chemistryml-v2.streamlit.app/static/{i}.png" width="300" height="300">')
     df['Image'] = images
 def display_molecule(molecule): # Function to display molecules
     img = Draw.MolToImage(molecule, size=(1000, 1000), fitImage=True)
