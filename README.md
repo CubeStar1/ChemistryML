@@ -9,7 +9,7 @@ ChemPredictor aims to analyze Molecular Properties of known compounds and constr
 1. **Molecular Property Analysis:** Explore the Molecular Properties of known compounds.
 2. **ANN Model Construction:** Build a robust Artificial Neural Network model for accurate prediction of molecular properties.
 3. **Interdisciplinary Approach:** Integrate concepts from chemistry, mathematics, and programming to enhance the model's effectiveness.
-4. **User-Friendly Interface:** Develop an interactive [WebUI using Streamlit](https://example.com/chempredictor) for seamless and user-friendly predictions.
+4. **User-Friendly Interface:** Develop an interactive [WebUI using Streamlit](https://chemistryml-v2.streamlit.app/) for seamless and user-friendly predictions.
 5. **Targeted Properties:** Focus on predicting a set of 9 molecular properties crucial for comprehensive chemical analysis:
 
     - **Dipole moment (µ):** Measurement of polarity of a molecule.
@@ -26,7 +26,7 @@ ChemPredictor aims to analyze Molecular Properties of known compounds and constr
 
 - **QM9 Dataset:** Utilize the QM9 dataset—a benchmark in quantum chemistry—for training and testing the model.
 - **Libraries Used:** Leverage TensorFlow, scikit-learn, and RDKit for efficient machine learning and chemical informatics.
-- **WebUI:** Create an intuitive [WebUI using Streamlit](https://example.com/chempredictor) to facilitate easy predictions and exploration of results.
+- **WebUI:** Create an intuitive [WebUI using Streamlit](https://chemistryml-v2.streamlit.app/) to facilitate easy predictions and exploration of results.
 
 **Tags:** Python, Machine Learning
 
