@@ -1,8 +1,12 @@
 
 # Libraries
 # ---------------------------------------------
-import base64
+import glob
 import os
+import base64
+from PIL import Image
+from io import BytesIO
+from image_handling import get_thumbnail, image_to_base64, image_formatter
 from pathlib import Path
 # Streamlit - To build the web application
 import streamlit as st
@@ -53,10 +57,10 @@ MinMaxScaler.__setstate__ = __monkey_patch_minmax_setstate__
 #scaler = joblib.load('ann_scaler_cv.joblib')
 scaler = joblib.load('utilities/scalers/ann_scaler_cv_full (1).joblib')
 
-# desc_df = pd.read_csv('descriptors_cv.csv')
-# desc_df = desc_df.select_dtypes(include=np.number).astype('float32')
-# desc_df = desc_df.loc[:, desc_df.var() > 0.0]
-# desc_df_columns = desc_df.columns[1:1070]
+#desc_df = pd.read_csv('descriptors_cv.csv')
+#desc_df = desc_df.select_dtypes(include=np.number).astype('float32')
+#desc_df = desc_df.loc[:, desc_df.var() > 0.0]
+#desc_df_columns = desc_df.columns[1:1070]
 
 #desc_df = pd.read_csv('desc_names.csv')
 #desc_df_columns = desc_df['Descriptors'].tolist()
@@ -70,13 +74,25 @@ desc_df_columns = desc_df['descriptor'].tolist()
 # def read_picture_file(file):
 #     with open(file, "rb") as f:
 #         return base64.b64encode(f.read()).decode()
+
+
+
+#@st.cache_data
+def convert_df(input_df):
+     # IMPORTANT: Cache the conversion to prevent computation on every rerun
+     return input_df.to_html(escape=False, formatters=dict(image=image_formatter))
+
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
-    images = []
-    for i in df['SMILES']:
-        Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'static/{i}.png',   size=(300, 300), fitImage=True, imageType='png')
-        images.append(f'<img src="https://chemistryml-v2.streamlit.app/static/{i}.png" width="300" height="300">')
-    df['Image'] = images
+    #images = []
+    for index, i in enumerate(df['SMILES']):
+        Draw.MolToFile(Chem.MolFromSmiles(str(i)), f'images/{index}{i}.png',   size=(300, 300), fitImage=True, imageType='png')
+        #images.append(f'<img src="https://chemistryml-v2.streamlit.app/static/{i}.png" width="300" height="300">')
+        #images.append(f'images/{i}.png')
+    images = glob.glob('images/*.png')
+    df['image'] = images
+    html_df = convert_df(df)
+    return html_df
 def display_molecule(molecule): # Function to display molecules
     img = Draw.MolToImage(molecule, size=(1000, 1000), fitImage=True)
     st.image(img)
@@ -152,7 +168,7 @@ st.markdown("""---""")
 
 
 # SIDEBAR
-st.sidebar.image('images/logo_team10alt-modified.png', use_column_width=True)
+st.sidebar.image('logo_team10alt-modified.png', use_column_width=True)
 st.sidebar.title('Are you ready to predict the properties of your molecules?')
 st.sidebar.markdown("""---""")
 #st.sidebar.markdown("## Select property")
@@ -232,20 +248,27 @@ def Prediction():
             st.info('Time Elapsed', icon='⏱️')
             st.metric(label='Time (s)', value= round(time.time() - start_time, 2))
     elif input_selection == 'Upload SMILES as file input' and prediction:
+        files = glob.glob('images/*.png')
+        for f in files:
+            os.remove(f)
         df = pd.read_csv(many_SMILES)
         X_test_scaled = mordred_descriptors_dataframe(df)
         X_Cv = predict_property_cv(X_test_scaled, model_cv)
-        output_df  = pd.concat([df, X_Cv], axis=1)
+        X_G = predict_property_G(X_test_scaled, model_G)
+        X_mu = predict_property_mu(X_test_scaled, model_cv)
+        output_df  = pd.concat([df, X_Cv, X_G, X_mu], axis=1)
         output_df.drop(columns=['mol'], inplace=True)
-        display_molecule_in_dataframe_as_html(output_df)
-        st.markdown(output_df.to_html(render_links=True, escape=False), unsafe_allow_html=True)
+        #display_molecule_in_dataframe_as_html(output_df)
+        html_df = display_molecule_in_dataframe_as_html(output_df)
+        st.markdown(html_df,unsafe_allow_html=True)
+        #st.markdown(output_df.to_html(render_links=True, escape=False), unsafe_allow_html=True)
         col1, col2  = st.columns(2)
-        with col1:
-            st.info('Input Molecules', icon='👇')
-            display_molecule_dataframe(output_df)
-        with col2:
-            st.info('Predicted Values', icon='📈')
-            st.dataframe(output_df, use_container_width=True)
+        # with col1:
+        #     st.info('Input Molecules', icon='👇')
+        #     display_molecule_dataframe(output_df)
+        # with col2:
+        #     st.info('Predicted Values', icon='📈')
+        #     st.dataframe(output_df, use_container_width=True)
 
 
         # with col1:

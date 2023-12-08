@@ -64,7 +64,7 @@ if smiles_list != "['CCCCO']":
     mol = Chem.MolFromSmiles(str(smiles_list))
 
     _discard = AllChem.Compute2DCoords(mol)
-    Draw.MolToFile(mol, 'img1.png', size=(300, 300), fitImage=False, imageType='png')
+    Draw.MolToFile(mol, 'output/img1.png', size=(300, 300), fitImage=False, imageType='png')
 
     col1, col2, col3 = st.columns(3)
 
