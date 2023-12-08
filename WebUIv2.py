@@ -80,7 +80,7 @@ desc_df_columns = desc_df['descriptor'].tolist()
 #@st.cache_data
 def convert_df(input_df):
      # IMPORTANT: Cache the conversion to prevent computation on every rerun
-     return input_df.to_html(escape=False, formatters=dict(image=image_formatter))
+     return input_df.to_html(escape=False, formatters=dict(Structure=image_formatter), justify='center')
 
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
@@ -90,7 +90,7 @@ def display_molecule_in_dataframe_as_html(dataframe):
         #images.append(f'<img src="https://chemistryml-v2.streamlit.app/static/{i}.png" width="300" height="300">')
         #images.append(f'images/{i}.png')
     images = glob.glob('images/*.png')
-    df['image'] = images
+    df['Structure'] = images
     html_df = convert_df(df)
     return html_df
 def display_molecule(molecule): # Function to display molecules
@@ -212,14 +212,18 @@ def Prediction():
     st.header('Select Property', anchor='center')
     property_selection = st.multiselect("", options=properties, default=properties[-1])
     if input_selection == 'One SMILES input' and prediction:
-        start_time = time.time()
-        progress_bar = st.progress(0, "Predicting...")
-        col1, col2, col3= st.columns(3, gap='large')
-        with col1:
-            st.info('Input Molecule', icon='👇')
-            display_molecule(Chem.MolFromSmiles(smiles_input))
-            progress_bar.progress(50, "Predicting...")
+        files = glob.glob('images/*.png')
+        for f in files:
+            os.remove(f)
 
+        # start_time = time.time()
+        # progress_bar = st.progress(0, "Predicting...")
+        # col1, col2, col3= st.columns(3, gap='large')
+        # with col1:
+        #     st.info('Input Molecule', icon='👇')
+        #     display_molecule(Chem.MolFromSmiles(smiles_input))
+        #     progress_bar.progress(50, "Predicting...")
+        #
         df_original = pd.DataFrame ([smiles_input], columns =['SMILES'])
         X_test_scaled = mordred_descriptors([smiles_input])
         X_Cv = predict_property_cv(X_test_scaled, model_cv)
@@ -231,22 +235,27 @@ def Prediction():
         X_mu = predict_property_mu(X_test_scaled, model_mu)
         X_mu_value = X_mu['Predicted mu (D)'][0]
         X_mu_value_rounded = round(X_mu_value, 2)
+        output_df = pd.concat([df_original, X_Cv, X_G, X_mu], axis=1)
+        #output_df.drop(columns=['mol'], inplace=True)
+        html_df = display_molecule_in_dataframe_as_html(output_df)
+        st.markdown(html_df, unsafe_allow_html=True)
 
-
-
-        with col2:
-            st.info('Predicted Value', icon='📈')
-            st.metric(label='Cv(cal/mol.K)', value= X_Cv_value_rounded)
-            st.metric(label='G(cal/mol)', value= X_G_value_rounded)
-            st.metric(label='Dipole Moment (D)', value= X_mu_value_rounded)
-            st.metric(label='HOMO (eV)', value=0)
-            st.metric(label='LUMO (eV)', value=0)
-            st.metric(label='Gap (eV)', value=0)
-            progress_bar.progress(100, "Completed!")
-            progress_bar.empty()
-        with col3:
-            st.info('Time Elapsed', icon='⏱️')
-            st.metric(label='Time (s)', value= round(time.time() - start_time, 2))
+        #
+        #
+        #
+        # with col2:
+        #     st.info('Predicted Value', icon='📈')
+        #     st.metric(label='Cv(cal/mol.K)', value= X_Cv_value_rounded)
+        #     st.metric(label='G(cal/mol)', value= X_G_value_rounded)
+        #     st.metric(label='Dipole Moment (D)', value= X_mu_value_rounded)
+        #     st.metric(label='HOMO (eV)', value=0)
+        #     st.metric(label='LUMO (eV)', value=0)
+        #     st.metric(label='Gap (eV)', value=0)
+        #     progress_bar.progress(100, "Completed!")
+        #     progress_bar.empty()
+        # with col3:
+        #     st.info('Time Elapsed', icon='⏱️')
+        #     st.metric(label='Time (s)', value= round(time.time() - start_time, 2))
     elif input_selection == 'Upload SMILES as file input' and prediction:
         files = glob.glob('images/*.png')
         for f in files:
@@ -261,6 +270,7 @@ def Prediction():
         #display_molecule_in_dataframe_as_html(output_df)
         html_df = display_molecule_in_dataframe_as_html(output_df)
         st.markdown(html_df,unsafe_allow_html=True)
+
         #st.markdown(output_df.to_html(render_links=True, escape=False), unsafe_allow_html=True)
         col1, col2  = st.columns(2)
         # with col1:
