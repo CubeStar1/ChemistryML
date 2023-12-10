@@ -14,7 +14,7 @@ from streamlit_option_menu import option_menu
 # Ketcher - To draw molecules
 from streamlit_ketcher import st_ketcher
 # 3Dmol - To display molecules
-from utils import display_3D_molecule
+# from utils import display_3D_molecule
 from stmol import showmol
 import py3Dmol
 # Utilities
@@ -160,10 +160,11 @@ def Prediction():
         prediction2 = st.sidebar.button('Predict property of molecule(s)')
         with results_column:
             with st.expander("Show 3D molecule(s)"):
-                if len(moleculesList) >0 and molecule != "":
-                    for  smile in moleculesList:
+                st.info("Coming soon")
+                # if len(moleculesList) >0 and molecule != "":
+                    # for  smile in moleculesList:
 
-                        display_3D_molecule(smile, width=400, height=400)
+                        # display_3D_molecule(smile, width=400, height=400)
 
                 # mol = Chem.MolFromSmiles(smile_code)
                 # mol = Chem.AddHs(mol)

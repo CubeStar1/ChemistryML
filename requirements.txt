@@ -17,11 +17,11 @@ lightgbm~=4.1.0
 joblib~=1.3.2
 
 # for stmol
-stmol==0.0.9
-py3Dmol
-ipyspeck(==0.6.1)
-ipywidgets(==7.6.3)
-ipython_genutils
+# stmol==0.0.9
+# py3Dmol
+# ipyspeck(==0.6.1)
+# ipywidgets(==7.6.3)
+# ipython_genutils
 
 # for chembl
 

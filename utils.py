@@ -10,26 +10,26 @@ from chembl_webresource_client.new_client import new_client as ch # for similari
 from rdkit import Chem
 from rdkit.Chem import AllChem # for molecule handling
 from rdkit.Chem import Draw # for molecule drawing
-import py3Dmol
-from stmol import showmol
+# import py3Dmol
+# from stmol import showmol
 from mordred import Calculator, descriptors # for descriptor calculation
 from image_handling import convert_df
 
 EBI_URL = "https://www.ebi.ac.uk/chembl/"
 
 
-def display_3D_molecule(smiles, width, height):
-    mol = Chem.MolFromSmiles(smiles)
-    mol = Chem.AddHs(mol)
-    AllChem.EmbedMolecule(mol)
-    AllChem.MMFFOptimizeMolecule(mol, maxIters=200)
-    mblock = Chem.MolToMolBlock(mol)
-    view = py3Dmol.view(width=width, height=height)
-    view.addModel(mblock, 'mol')
-    view.setStyle({"stick": {}})
-    view.zoomTo()
-    view.spin(spin_on=True)
-    showmol(view)
+# def display_3D_molecule(smiles, width, height):
+#     mol = Chem.MolFromSmiles(smiles)
+#     mol = Chem.AddHs(mol)
+#     AllChem.EmbedMolecule(mol)
+#     AllChem.MMFFOptimizeMolecule(mol, maxIters=200)
+#     mblock = Chem.MolToMolBlock(mol)
+#     view = py3Dmol.view(width=width, height=height)
+#     view.addModel(mblock, 'mol')
+#     view.setStyle({"stick": {}})
+#     view.zoomTo()
+#     view.spin(spin_on=True)
+#     showmol(view)
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
     for index, i in enumerate(df['SMILES']):
