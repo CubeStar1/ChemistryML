@@ -15,8 +15,8 @@ from streamlit_option_menu import option_menu
 from streamlit_ketcher import st_ketcher
 # 3Dmol - To display molecules
 # from utils import display_3D_molecule
-from stmol import showmol
-import py3Dmol
+# from stmol import showmol
+# import py3Dmol
 # Utilities
 import utils
 from utils import display_molecule_in_dataframe_as_html
