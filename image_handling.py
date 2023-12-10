@@ -17,3 +17,7 @@ def image_to_base64(img_path: str) -> str:
 def image_formatter(img_path: str) -> str:
     return f'<img src="data:image/png;base64,{image_to_base64(img_path)}">'
 
+
+def convert_df(input_df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return input_df.to_html(escape=False, formatters=dict(Structure=image_formatter), justify='center')
