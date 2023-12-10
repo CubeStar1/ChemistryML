@@ -27,4 +27,4 @@ ipython_genutils
 
 chembl-webresource-client==0.10.8
 
-streamlit_ketcher
+streamlit-ketcher
