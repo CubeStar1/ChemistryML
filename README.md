@@ -85,7 +85,7 @@ To run the ChemPredictor WebUI, follow these steps:
 
 3. **Predict Molecular Properties:**
 
-Choose one of the following ways to predict molecular properties:
+   Choose one of the following ways to predict molecular properties:
 
    - Enter SMILES String:
 
