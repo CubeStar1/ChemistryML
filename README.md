@@ -55,7 +55,7 @@ To run the ChemPredictor WebUI, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/ChemPredictor.git
+   git clone https://github.com/CubeStar1/ChemistryML.git
    cd ChemPredictor
 2. **Create a virtual environment:**
 
