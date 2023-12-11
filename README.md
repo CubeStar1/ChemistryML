@@ -63,12 +63,12 @@ To run the ChemPredictor WebUI, follow these steps:
    python -m venv venv
 3. **Activate the virtual environment:**
 
-- On Windows:   
-   ```bash
-  .\venv\Scripts\activate
-- On Unix or MacOS:
-   ```bash
-  source venv/bin/activate
+   - On Windows:   
+      ```bash
+     .\venv\Scripts\activate
+   - On Unix or MacOS:
+      ```bash
+     source venv/bin/activate
 4. **Install dependencies:**
 
    ```bash
@@ -81,7 +81,7 @@ To run the ChemPredictor WebUI, follow these steps:
     streamlit run WebUIv2.py
 2. **Open the WebUI in your browser:** 
 
-- Open your web browser and navigate to http://localhost:8501 to use the ChemPredictor WebUI.
+   - Open your web browser and navigate to http://localhost:8501 to use the ChemPredictor WebUI.
 
 3. **Predict Molecular Properties:**
 
@@ -97,9 +97,9 @@ To run the ChemPredictor WebUI, follow these steps:
 
      - Utilize the interactive drawing board to draw the molecule for prediction.
 4. **Click on the Predict Button:**
-- Once the input is provided (SMILES string, CSV file, or drawn molecule), click on the "Predict" button.
+   - Once the input is provided (SMILES string, CSV file, or drawn molecule), click on the "Predict" button.
 5. **View Predicted Values:**
-- The predicted values will be displayed on the right side of the screen.
+   - The predicted values will be displayed on the right side of the screen.
 
 ## Hosted Version
 For a quick demo, you can also access the hosted version of ChemPredictor at https://chemistryml-v2.streamlit.app/
